@@ -1,0 +1,13 @@
+uvicorn
+fastapi==0.74.1
+python-multipart==0.0.5
+email-validator==1.0.5
+requests==2.23.0
+passlib[bcrypt]==1.7.2
+pydantic
+emails==0.5.15
+pymysql
+alembic
+sqlalchemy
+python-jose[cryptography]==3.1.0
+python-dotenv
