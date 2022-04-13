@@ -1,6 +1,6 @@
 import os
 from typing import List
-from app.utils import get_url
+from app.utils import get_db_url
 
 from pydantic import AnyHttpUrl, BaseSettings
 
@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = os.environ["PROJECT_NAME"]
 
-    SQLALCHEMY_DATABASE_URI: str = get_url()
+    SQLALCHEMY_DATABASE_URI: str = get_db_url()
 
     class Config:
         case_sensitive = True

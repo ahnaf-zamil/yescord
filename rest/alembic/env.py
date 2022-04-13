@@ -17,13 +17,13 @@ fileConfig(config.config_file_name)
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 # target_metadata = None
-
-from app.models.base import DeclarativeBase  # noqa
-from app.utils import get_url
-
 from dotenv import load_dotenv
 
 load_dotenv()
+
+from app.models.base import DeclarativeBase  # noqa
+from app.utils import get_db_url
+
 
 target_metadata = DeclarativeBase.metadata
 
@@ -45,7 +45,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = get_url()
+    url = get_db_url()
     context.configure(
         url=url, target_metadata=target_metadata, literal_binds=True, compare_type=True
     )
@@ -62,7 +62,7 @@ def run_migrations_online():
 
     """
     configuration = config.get_section(config.config_ini_section)
-    configuration["sqlalchemy.url"] = get_url()
+    configuration["sqlalchemy.url"] = get_db_url()
     connectable = engine_from_config(
         configuration,
         prefix="sqlalchemy.",

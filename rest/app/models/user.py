@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, Integer, String, BigInteger
+from sqlalchemy.orm import relationship
 from .base import DeclarativeBase
 
 
@@ -11,6 +12,8 @@ class User(DeclarativeBase):
 
     is_active = Column(Boolean(), default=True)
     is_staff = Column(Boolean(), default=False)
+
+    guilds = relationship("Guild", secondary="guild_joins", back_populates="members")
 
     def to_json(self, email=False):
         payload = {

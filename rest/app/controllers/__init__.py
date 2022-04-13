@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .routers import user
+from . import user
 
 controller = APIRouter()
 

@@ -4,7 +4,7 @@ import os
 snowflake_proxy = ServerProxy(os.environ["SNOWFLAKE_SERVICE"])
 
 
-def get_url():
+def get_db_url():
     user = os.environ["MYSQL_USER"]
     password = os.environ["MYSQL_PASSWORD"]
     server = os.environ["MYSQL_SERVER"]
