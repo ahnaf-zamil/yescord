@@ -1,10 +1,8 @@
-from datetime import timedelta
 from typing import Optional
 from fastapi import HTTPException, Request
 from .base import DatabaseAware
 from app.models import User
 from app.core.security import (
-    create_access_token,
     get_password_hash,
     verifiy_access_token,
     verify_password,
@@ -70,7 +68,7 @@ class UserService(DatabaseAware):
 
         return new_user
 
-    def login_user(self, email: str, password: str) -> str:
+    def login_user(self, email: str, password: str) -> User:
         """Authenticates and logs in a user"""
         user: Optional[User] = self.db.query(User).filter_by(email=email).first()
 
@@ -79,8 +77,4 @@ class UserService(DatabaseAware):
         if not verify_password(password, user.hashed_password):
             raise HTTPException(status_code=401, detail="Invalid credentials")
 
-        # Creating JWT access token valid for 7 days
-        access_token = create_access_token(str(user.id), timedelta(days=7))
-
-        # Returning token so that controller can set cookie
-        return access_token
+        return user

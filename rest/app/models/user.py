@@ -17,7 +17,7 @@ class User(DeclarativeBase):
 
     def to_json(self, email=False):
         payload = {
-            "id": self.id,
+            "id": str(self.id),
             "username": self.username,
             "discriminator": self.discriminator,
             "admin": self.is_staff,

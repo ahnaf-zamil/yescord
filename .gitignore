@@ -3,3 +3,4 @@ app.egg-info
 venv
 .vscode
 .env
+versions/*
