@@ -11,3 +11,4 @@ alembic
 sqlalchemy
 python-jose[cryptography]==3.1.0
 python-dotenv
+py-eureka-client

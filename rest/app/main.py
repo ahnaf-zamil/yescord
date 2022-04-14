@@ -7,6 +7,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from app.controllers import controller
 from app.core.config import settings
+from .eureka import eureka_client
 
 app = FastAPI(title=settings.PROJECT_NAME)
 
@@ -20,3 +21,4 @@ if settings.BACKEND_CORS_ORIGINS:
     )
 
 app.include_router(controller)
+eureka_client.start()
