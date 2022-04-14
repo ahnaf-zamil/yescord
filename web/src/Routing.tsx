@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LandingPage from "./app/Landing";
 import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
 
@@ -9,6 +10,7 @@ interface IRoute {
 }
 
 const mappings: Array<IRoute> = [
+  { path: "/", component: <LandingPage /> },
   { path: "/register", component: <RegisterPage /> },
   { path: "/login", component: <LoginPage /> },
 ];

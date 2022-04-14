@@ -6,34 +6,15 @@ import { registerAuthHandler } from "./handlers/auth";
 import express from "express";
 import eurekaConfig from "./eureka.config";
 import os from "os";
+import { AddressInfo } from "net";
 
-const PORT = parseInt(process.env?.PORT ?? "4000");
+const PORT = 0;
 const HOST = "0.0.0.0";
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
-const eurekaClient = new Eureka({
-  instance: {
-    app: eurekaConfig.name,
-    ipAddr: HOST,
-    port: {
-      $: PORT,
-      "@enabled": true,
-    },
-    dataCenterInfo: {
-      "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
-      name: "MyOwn",
-    },
-    hostName: os.hostname(),
-    vipAddress: "gateway.yescord.com",
-    status: "UP",
-  },
-  eureka: {
-    ...eurekaConfig.eureka,
-    servicePath: "/eureka/apps/",
-  },
-});
+let eurekaClient: Eureka;
 
 const handleConnection = (socket: Socket) => {
   registerAuthHandler(io, socket);
@@ -47,6 +28,37 @@ app.get("/url", (req, res) => {
 });
 
 httpServer.listen({ port: PORT, host: HOST }, () => {
-  console.log(`Listening on port ${PORT}`);
+  const info = httpServer.address() as AddressInfo;
+  console.log(`Server has started on port ${info.port}`);
+
+  eurekaClient = new Eureka({
+    instance: {
+      app: eurekaConfig.name,
+      instanceId: `${info.address}:${info.port.toString()}`,
+      ipAddr: info.address,
+      port: {
+        $: info.port,
+        "@enabled": true,
+      },
+      dataCenterInfo: {
+        "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+        name: "MyOwn",
+      },
+      hostName: os.hostname(),
+      vipAddress: "gateway.yescord.com",
+      status: "UP",
+    },
+    eureka: {
+      ...eurekaConfig.eureka,
+      servicePath: "/eureka/apps/",
+    },
+  });
+
   eurekaClient.start();
+});
+
+process.once("SIGINT", () => {
+  console.log("Cleaning up");
+  eurekaClient.stop();
+  httpServer.close();
 });
