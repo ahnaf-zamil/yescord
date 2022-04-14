@@ -1,6 +1,7 @@
 import { AxiosError } from "axios";
 import { Dispatch, FormEvent, SetStateAction } from "react";
 import { loginUser } from "../../../http/auth";
+import { isEmail } from "../../../utils";
 
 const handleFormSubmit = async (
   e: FormEvent<HTMLFormElement>,
@@ -16,6 +17,11 @@ const handleFormSubmit = async (
 
   const email = targetForm.email.value;
   const password = targetForm.password.value;
+
+  if (!isEmail(email)) {
+    setError("Invalid email");
+    return;
+  }
 
   try {
     await loginUser({ email, password });
