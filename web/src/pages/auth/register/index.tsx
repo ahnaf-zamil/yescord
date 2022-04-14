@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
+import Copyright from "../../../components/Copyright";
 import { fetchCurrentUser } from "../../../http/auth";
 import FormInput from "../components/FormInput";
 import handleFormSubmit from "./handle";
@@ -71,10 +72,7 @@ const RegisterPage: React.FC = () => {
           Log In
         </a>
       </small>
-      <p className="text-gray-600 text-sm absolute bottom-2 text-center">
-        Copyright &copy; K.M Ahnaf Zamil {new Date().getFullYear()} | All Rights
-        Reserved
-      </p>
+      <Copyright />
     </main>
   );
 };
