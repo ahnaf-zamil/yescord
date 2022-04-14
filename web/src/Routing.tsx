@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/auth/login";
 import RegisterPage from "./pages/auth/register";
 
 interface IRoute {
@@ -9,6 +10,7 @@ interface IRoute {
 
 const mappings: Array<IRoute> = [
   { path: "/register", component: <RegisterPage /> },
+  { path: "/login", component: <LoginPage /> },
 ];
 
 const Routing: React.FC = () => {

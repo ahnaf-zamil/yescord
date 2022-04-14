@@ -4,7 +4,7 @@ import { fetchCurrentUser } from "../../../http/auth";
 import FormInput from "../components/FormInput";
 import handleFormSubmit from "./handle";
 
-const RegisterPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const ref = useRef<LoadingBarRef>(null);
 
@@ -30,20 +30,12 @@ const RegisterPage: React.FC = () => {
         className="container md:w-7/12 lg:w-6/12 xl:w-5/12 2xl:w-4/12 bg-[#1e2338] py-10 px-14 rounded-md shadow-4xl flex flex-col text-left"
       >
         <div className="flex flex-col gap-2 mb-8">
-          <h1 className="text-2xl font-semibold">Sign Up</h1>
+          <h1 className="text-2xl font-semibold">Login</h1>
           <small className="text-lg text-gray-400">
-            Create an account to use Yescord
+            Log into your account account to use Yescord
           </small>
         </div>
         <div className="flex flex-col gap-4">
-          <FormInput
-            name="username"
-            icon="fa-solid fa-user"
-            type="text"
-            placeholder="Username"
-            minLength={3}
-            maxLength={32}
-          />
           <FormInput
             name="email"
             icon="fa-solid fa-envelope-open"
@@ -63,12 +55,12 @@ const RegisterPage: React.FC = () => {
         </button>
       </form>
       <small className="text-lg text-gray-400">
-        Already have an account?{" "}
+        Don't have an account?{" "}
         <a
-          href="/login"
+          href="/register"
           className="text-blue-400 hover:text-blue-500 cursor-pointer"
         >
-          Log In
+          Create one
         </a>
       </small>
       <p className="text-gray-600 text-sm absolute bottom-2 text-center">
@@ -79,4 +71,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
