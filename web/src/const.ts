@@ -1,3 +1,3 @@
 export const API = {
-    REST: "//localhost:8000"
-}
+  REST: { BASE: "//localhost:8000", REGISTER_USER: "/users/register" },
+};
