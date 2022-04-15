@@ -7,16 +7,22 @@ import express from "express";
 import eurekaConfig from "./eureka.config";
 import os from "os";
 import { AddressInfo } from "net";
+import "log-timestamp";
 
 const PORT = 0;
 const HOST = "0.0.0.0";
 
 const app = express();
 const httpServer = createServer(app);
-const io = new Server(httpServer);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
 let eurekaClient: Eureka;
 
 const handleConnection = (socket: Socket) => {
+  console.log(`Socket with ID ${socket.id} has connected to the gateway`);
   registerAuthHandler(io, socket);
 };
 
