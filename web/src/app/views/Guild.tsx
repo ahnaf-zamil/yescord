@@ -1,14 +1,20 @@
 import React from "react";
+import ChannelsBar from "../../components/ChannelsBar";
+import { useCacheStore } from "../../state/cache";
 import { useUIStore } from "../../state/ui";
 //import FriendsBar from "../../components/FriendsBar";
 
 const Guild: React.FC = () => {
-  const uiState = useUIStore();
+  const uiStore = useUIStore();
+  const cacheStore = useCacheStore();
 
   /* Shows guild when an icon is clicked */
   return (
     <div className="flex">
-      <h1>Selected guild: {uiState.selectedGuildId}</h1>
+      <ChannelsBar
+        guildName={cacheStore.getGuild(uiStore.selectedGuildId)?.name as string}
+      />
+      <h1>Selected guild: {uiStore.selectedGuildId}</h1>
     </div>
   );
 };

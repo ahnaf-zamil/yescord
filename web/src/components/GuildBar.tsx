@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IGuild } from "../app/types";
 import { useSocketStore } from "../state/socket";
 import { GATEWAY_EVENTS } from "../gateway/events";
 import { gatewayLogger } from "../gateway/logger";
 import { UIStore, useUIStore } from "../state/ui";
+import { useCacheStore } from "../state/cache";
 
-const GuildIcon: React.FC<{ guild: IGuild; store: UIStore }> = ({
-  guild,
-  store,
-}) => {
+const GuildIcon: React.FC<{
+  guild: IGuild;
+  store: UIStore;
+  selectedGuildId: string;
+}> = ({ guild, store, selectedGuildId }) => {
   return (
     <li className="w-full flex justify-center relative">
       <div
@@ -18,7 +20,12 @@ const GuildIcon: React.FC<{ guild: IGuild; store: UIStore }> = ({
         }}
         className="group transition duration-150 hover:shadow-emerald-500 cursor-pointer w-[70px] hover:bg-emerald-500 flex items-center text-2xl justify-center h-[70px] bg-[#1e2338] rounded-lg"
       >
-        <p className="absolute left-0 transition duration-300 group-hover:border-2 rounded-lg h-[40px]"></p>
+        <p
+          className={
+            (selectedGuildId !== guild.id ? "group-hover:" : "") +
+            "border-2 absolute left-0 transition duration-300 rounded-lg h-[40px]"
+          }
+        ></p>
         {guild.name.substring(0, 1)}
       </div>
     </li>
@@ -28,13 +35,13 @@ const GuildIcon: React.FC<{ guild: IGuild; store: UIStore }> = ({
 const GuildSidebar: React.FC = () => {
   const socket = useSocketStore().socket;
   const uiStore = useUIStore();
-  const [guilds, setGuilds] = useState<Array<IGuild>>([]);
+  const cacheStore = useCacheStore();
 
   useEffect(() => {
     if (socket) {
       socket.on(GATEWAY_EVENTS.GUILD_AVAILABLE, (guild) => {
         gatewayLogger(`GUILD_AVAILABLE: ${guild.id}`);
-        setGuilds((prevState) => [...prevState, guild]);
+        cacheStore.addGuild(guild);
       });
     }
   }, [socket]);
@@ -43,7 +50,10 @@ const GuildSidebar: React.FC = () => {
     <ul className="bg-[#060c23] h-full w-28 flex flex-col items-center py-6">
       <div className="mb-2">
         <li
-          onClick={() => uiStore.setSelectedView("FRIENDS")}
+          onClick={() => {
+            uiStore.setSelectedGuildId("");
+            uiStore.setSelectedView("FRIENDS");
+          }}
           className={
             (uiStore.selectedView === "GUILD"
               ? "hover:bg-blue-500 bg-[#1e2338]"
@@ -56,8 +66,12 @@ const GuildSidebar: React.FC = () => {
         <p className="border-2 border-[#1e2338] rounded-md my-3 mx-2"></p>
       </div>
       <div className="flex flex-col gap-4 w-full">
-        {guilds.map((guild) => (
-          <GuildIcon guild={guild} store={uiStore} />
+        {cacheStore.guilds.map((guild) => (
+          <GuildIcon
+            selectedGuildId={uiStore.selectedGuildId}
+            guild={guild}
+            store={uiStore}
+          />
         ))}
       </div>
     </ul>
