@@ -1,12 +1,14 @@
 import { GatewayCredentials } from "../../http/gateway";
 import { useAuthStore } from "../../state/auth";
-import { getSocketClient } from "../client";
+import { useSocketStore } from "../../state/socket";
 import { GATEWAY_EVENTS } from "../events";
+import { gatewayLogger } from "../logger";
 
 export const onConnect = (credentials: GatewayCredentials) => {
-  const socket = getSocketClient();
-  console.log(`Established connection with gateway`);
-  console.log(`Socket identified by ID ${socket.id}`);
+  const socket = useSocketStore.getState().socket!;
+
+  gatewayLogger(`Established connection`);
+  gatewayLogger(`Socket identified by ID ${socket.id}`);
 
   // Sending authentication payload
   socket.emit(
@@ -16,5 +18,5 @@ export const onConnect = (credentials: GatewayCredentials) => {
 };
 
 export const onDisconnect = () => {
-  console.log("Disconnected from gateway");
+  gatewayLogger("Disconnected");
 };

@@ -5,3 +5,9 @@ export interface IUser {
   email?: string;
   admin: boolean;
 }
+
+export interface IGuild {
+  id: string;
+  name: string;
+  owner_id: string;
+}

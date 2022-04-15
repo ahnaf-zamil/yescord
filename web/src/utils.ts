@@ -6,3 +6,12 @@ export const isEmail = (value: string) => {
   }
   return true;
 };
+
+export const webLogger = (value: string, apiColour: string = "white") => {
+  console.log(
+    `%c[${new Date().toISOString()}] ${value}`,
+    "color: yellow",
+    `color: ${apiColour}`,
+    "color: white"
+  );
+};

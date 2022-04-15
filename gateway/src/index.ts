@@ -9,6 +9,7 @@ import os from "os";
 import { AddressInfo } from "net";
 import "log-timestamp";
 import { Events } from "./events";
+import { db } from "./db";
 
 const PORT = 0;
 const HOST = "0.0.0.0";
@@ -38,6 +39,12 @@ httpServer.listen({ port: PORT, host: HOST }, () => {
   const info = httpServer.address() as AddressInfo;
   console.log(`Server has started on port ${info.port}`);
 
+  // Initializing MySQL connection
+  db.connect(() => {
+    console.log(`Connected to MySQL`);
+  });
+
+  // Initializing Eureka client
   eurekaClient = new Eureka({
     instance: {
       app: eurekaConfig.name,
@@ -60,7 +67,6 @@ httpServer.listen({ port: PORT, host: HOST }, () => {
       servicePath: "/eureka/apps/",
     },
   });
-
   eurekaClient.start();
 });
 
