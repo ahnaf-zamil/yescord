@@ -8,6 +8,7 @@ import eurekaConfig from "./eureka.config";
 import os from "os";
 import { AddressInfo } from "net";
 import "log-timestamp";
+import { Events } from "./events";
 
 const PORT = 0;
 const HOST = "0.0.0.0";
@@ -26,7 +27,7 @@ const handleConnection = (socket: Socket) => {
   registerAuthHandler(io, socket);
 };
 
-io.on("connection", handleConnection);
+io.on(Events.CONNECT, handleConnection);
 
 app.get("/url", (req, res) => {
   // Endpoint for fetching the gateway URI, because py-eureka-client does not allow fetching the raw host
@@ -64,7 +65,7 @@ httpServer.listen({ port: PORT, host: HOST }, () => {
 });
 
 process.once("SIGINT", () => {
-  console.log("Cleaning up");
+  console.log("Cleaning up.");
   eurekaClient.stop();
   httpServer.close();
 });

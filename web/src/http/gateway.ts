@@ -1,7 +1,7 @@
 import { client } from ".";
 import { ENDPOINTS } from "./endpoints";
 
-interface GatewayCredentials {
+export interface GatewayCredentials {
   token: string;
   endpoint: string;
 }

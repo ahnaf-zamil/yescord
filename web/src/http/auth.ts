@@ -1,4 +1,5 @@
 import { client } from ".";
+import { IUser } from "../app/types";
 import { ENDPOINTS } from "./endpoints";
 
 interface LoginUserProps {
@@ -22,5 +23,5 @@ export const registerUser = async (body: RegisterUserProps) => {
 
 export const fetchCurrentUser = async () => {
   const resp = await client.get(ENDPOINTS.AUTH.CURRENT_USER);
-  return resp.data;
+  return resp.data as IUser;
 };
