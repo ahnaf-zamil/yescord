@@ -48,7 +48,7 @@ const GuildSidebar: React.FC = () => {
 
   return (
     <ul className="bg-[#060c23] h-full w-28 flex flex-col items-center py-6">
-      <div className="mb-2">
+      <div>
         <li
           onClick={() => {
             uiStore.setSelectedGuildId("");
@@ -58,14 +58,14 @@ const GuildSidebar: React.FC = () => {
             (uiStore.selectedView === "GUILD"
               ? "hover:bg-blue-500 bg-[#1e2338]"
               : "bg-blue-500") +
-            " transition duration-200 cursor-pointer w-[60px] flex items-center text-2xl justify-center h-[60px] rounded-full"
+            " transition duration-200 cursor-pointer w-[60px] flex items-center text-2xl justify-center h-[60px] rounded-lg"
           }
         >
           <i className="fas fa-home"></i>
         </li>
-        <p className="border-2 border-[#1e2338] rounded-md my-3 mx-2"></p>
+        <p className="border-2 border-[#1e2338] rounded-md mt-3 mx-2"></p>
       </div>
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-4 w-full my-6">
         {cacheStore.guilds.map((guild) => (
           <GuildIcon
             selectedGuildId={uiStore.selectedGuildId}
@@ -73,6 +73,17 @@ const GuildSidebar: React.FC = () => {
             store={uiStore}
           />
         ))}
+      </div>
+      <div>
+        <p className="border-2 border-[#1e2338] rounded-md mb-3 mx-2"></p>
+        <li
+          onClick={() => {}}
+          className={
+            "hover:bg-blue-500 hover:text-white text-blue-500 bg-[#1e2338] transition duration-200 cursor-pointer w-[60px] flex items-center text-2xl justify-center h-[60px] rounded-full"
+          }
+        >
+          <i className="fas fa-plus"></i>
+        </li>
       </div>
     </ul>
   );
