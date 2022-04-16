@@ -52,21 +52,31 @@ export const registerAuthHandler = (io: Server, socket: Socket) => {
 
   const sendClientGuilds = () => {
     const userId = socket.data.id;
-    const statement =
-      "SELECT g.id, g.name, g.owner_id FROM guild as g LEFT JOIN guild_joins as gj ON g.id = gj.guild_id WHERE gj.user_id = " +
-      db.escape(userId);
+    const guildStatement = `SELECT g.id, g.name, g.owner_id FROM guild as g LEFT JOIN guild_joins as gj ON g.id = gj.guild_id WHERE gj.user_id=${db.escape(
+      userId
+    )}`;
 
-    db.query(statement, (err, results) => {
+    db.query(guildStatement, (err, results) => {
       if (err) {
         throw err;
       }
 
       results.forEach(
-        (guild: { id: number; name: string; owner_id: number }) => {
-          socket.emit(Events.GUILD_AVAILABLE, {
-            ...guild,
-            owner_id: guild.owner_id.toString(),
-            id: guild.id.toString(),
+        (guild: { id: string; name: string; owner_id: number }) => {
+          // Query channel for each guild
+          const channelStatement = `SELECT c.id, c.name, c.created_at FROM channel AS c WHERE guild_id=${db.escape(
+            guild.id
+          )}`;
+
+          db.query(channelStatement, (err, results) => {
+            if (err) {
+              throw err;
+            }
+
+            socket.emit(Events.GUILD_AVAILABLE, {
+              ...guild,
+              channels: results,
+            });
           });
         }
       );

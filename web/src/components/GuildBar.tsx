@@ -40,6 +40,7 @@ const GuildSidebar: React.FC = () => {
   useEffect(() => {
     if (socket) {
       socket.on(GATEWAY_EVENTS.GUILD_AVAILABLE, (guild) => {
+        console.log(guild);
         gatewayLogger(`GUILD_AVAILABLE: ${guild.id}`);
         cacheStore.addGuild(guild);
       });
@@ -65,17 +66,19 @@ const GuildSidebar: React.FC = () => {
         </li>
         <p className="border-2 border-[#1e2338] rounded-md mt-3 mx-2"></p>
       </div>
-      <div className="flex flex-col gap-4 w-full my-6">
-        {cacheStore.guilds.map((guild) => (
-          <GuildIcon
-            selectedGuildId={uiStore.selectedGuildId}
-            guild={guild}
-            store={uiStore}
-          />
-        ))}
-      </div>
-      <div>
-        <p className="border-2 border-[#1e2338] rounded-md mb-3 mx-2"></p>
+      {cacheStore.guilds.length ? (
+        <div className="flex flex-col gap-4 w-full mt-6">
+          {cacheStore.guilds.map((guild) => (
+            <GuildIcon
+              selectedGuildId={uiStore.selectedGuildId}
+              guild={guild}
+              store={uiStore}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      <div className="mt-6">
         <li
           onClick={() => {}}
           className={

@@ -12,6 +12,6 @@ def get_db_url():
     return f"mysql+pymysql://{user}:{password}@{server}/{db}"
 
 
-def get_snowflake():
+def get_snowflake() -> str:
     snowflake = snowflake_proxy.generate_snowflake()
-    return int(snowflake)  # XML-RPC returns string
+    return snowflake  # XML-RPC returns string

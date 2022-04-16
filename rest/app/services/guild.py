@@ -1,8 +1,9 @@
 from typing import Optional
 from fastapi import HTTPException
+from app.types.channel import ChannelTypes
 from app.utils import get_snowflake
 from .base import DatabaseAware
-from app.models import Guild, GuildJoin, GuildInvite
+from app.models import Guild, GuildJoin, GuildInvite, Channel
 
 from sqlalchemy import func
 
@@ -99,3 +100,30 @@ class GuildService(DatabaseAware):
         self.db.commit()
 
         return new_invite
+
+    def create_channel(
+        self, member_id: int, guild_id: int, channel_name: str, channel_type: int
+    ):
+        # Only for NOW, all members can create channels
+        guild_join = (
+            self.db.query(GuildJoin.id)
+            .filter_by(user_id=member_id, guild_id=guild_id)
+            .first()
+            is not None
+        )
+
+        if not guild_join:
+            raise HTTPException(
+                status_code=403, detail="You are not a member of this guild"
+            )
+
+        if not channel_type in ChannelTypes:
+            raise HTTPException(status_code=400, detail="Invalid channel type")
+
+        new_channel = Channel(
+            id=get_snowflake(), name=channel_name, guild_id=guild_id, type_=channel_type
+        )
+        self.db.add(new_channel)
+        self.db.commit()
+
+        return new_channel

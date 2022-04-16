@@ -12,7 +12,7 @@ def register_user(
     body: UserRegister, response: Response, user_service: UserService = Depends()
 ):
     user = user_service.register_user(body.username, body.email, body.password)
-    access_token = create_access_token(str(user.id), timedelta(days=7))
+    access_token = create_access_token(user.id, timedelta(days=7))
     response.set_cookie(key="authorization", value=access_token, httponly=True)
     return {"success": True, "user": user.to_json()}
 
@@ -22,7 +22,7 @@ def login_user(
     body: UserLogin, response: Response, user_service: UserService = Depends()
 ):
     user = user_service.login_user(body.email, body.password)
-    access_token = create_access_token(str(user.id), timedelta(days=7))
+    access_token = create_access_token(user.id, timedelta(days=7))
     response.set_cookie(key="authorization", value=access_token, httponly=True)
     return {"success": True, "user": user.to_json()}
 

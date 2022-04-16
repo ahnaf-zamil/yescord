@@ -12,9 +12,13 @@ class CreateGuild(GuildBase):
 
 
 class CreateGuildInvite(BaseModel):
-    guild_id: int
     expires_at: Optional[int] = 0
 
 
 class JoinGuild(BaseModel):
     code: constr(max_length=10)
+
+
+class CreateChannel(BaseModel):
+    name: constr(min_length=1, max_length=20)
+    type: int
