@@ -3,4 +3,4 @@ app.egg-info
 venv
 .vscode
 .env
-versions/*
+rest/alembic/versions/*
