@@ -40,7 +40,6 @@ const GuildSidebar: React.FC = () => {
   useEffect(() => {
     if (socket) {
       socket.on(GATEWAY_EVENTS.GUILD_AVAILABLE, (guild) => {
-        console.log(guild);
         gatewayLogger(`GUILD_AVAILABLE: ${guild.id}`);
         cacheStore.addGuild(guild);
       });

@@ -1,12 +1,5 @@
-import React, {
-  KeyboardEvent,
-  KeyboardEventHandler,
-  SyntheticEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useUIStore } from "../state/ui";
+import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { useUIStore } from "../../state/ui";
 
 const Chatbox: React.FC = () => {
   const [content, setContent] = useState<string>("");
@@ -30,7 +23,7 @@ const Chatbox: React.FC = () => {
   };
 
   return (
-    <div className="w-full p-6">
+    <div className="w-full py-6">
       <textarea
         rows={1}
         className="resize-none outline-none rounded-lg bg-[#1e2338] w-full px-6 flex pt-3"

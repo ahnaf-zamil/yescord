@@ -15,3 +15,6 @@ export const webLogger = (value: string, apiColour: string = "white") => {
     "color: white"
   );
 };
+
+export const capitalize = (str: string) =>
+  str.charAt(0).toUpperCase() + str.slice(1);

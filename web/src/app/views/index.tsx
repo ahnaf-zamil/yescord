@@ -13,6 +13,7 @@ import { gatewayLogger } from "../../gateway/logger";
 import { SelectedView, useUIStore } from "../../state/ui";
 import Friends from "./Friends";
 import Guild from "./Guild";
+import "../../styles/views.css";
 
 const MainView: React.FC = () => {
   const authState = useAuthStore();

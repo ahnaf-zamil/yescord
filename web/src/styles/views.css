@@ -1,0 +1,19 @@
+#guild-view {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+#guild-view #channels {
+  grid-area: 1 / 1 / 6 / 2;
+}
+
+#guild-view #chat {
+  grid-area: 1 / 2 / 2 / 7;
+}
+
+#guild-view #members {
+  grid-area: 1 / 7 / 2 / 8;
+}

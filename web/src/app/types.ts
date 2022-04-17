@@ -11,3 +11,9 @@ export interface IGuild {
   name: string;
   owner_id: string;
 }
+
+export interface IChannel {
+  id: string;
+  name: string;
+  created_at: number;
+}
