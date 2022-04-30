@@ -1,4 +1,5 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { sendMessage } from "../../http/channel";
 import { useUIStore } from "../../state/ui";
 
 const Chatbox: React.FC = () => {
@@ -10,15 +11,19 @@ const Chatbox: React.FC = () => {
     textAreaRef.current?.focus();
   }, [uiStore.selectedGuildId]);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = async (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
-        console.log("Send message");
-        e.preventDefault();
+        setContent("");
+        const selectedGuildId = uiStore.selectedGuildId;
+        const selectedChannelId = uiStore.getSelectedChannelId(selectedGuildId);
+
+        console.log(`Sending message to channel ${selectedChannelId}`);
+        await sendMessage(selectedChannelId!, content);
       } else {
-        e.preventDefault();
         // Todo: Make input field get bigger due to line breaks
       }
+      e.preventDefault();
     }
   };
 

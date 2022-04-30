@@ -18,6 +18,7 @@ class User(DeclarativeBase):
     is_staff = Column(Boolean(), default=False)
 
     guilds = relationship("Guild", secondary="guild_joins", back_populates="members")
+    messages = relationship("Message")
 
     def to_json(self, email=False):
         payload = {

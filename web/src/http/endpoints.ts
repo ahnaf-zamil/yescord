@@ -7,4 +7,5 @@ export const ENDPOINTS = {
   GATEWAY: {
     GET_GATEWAY_CREDENTIALS: "/gateway/get",
   },
+  CHANNEL: "/channels",
 };

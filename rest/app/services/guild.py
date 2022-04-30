@@ -13,6 +13,15 @@ import time
 
 
 class GuildService(DatabaseAware):
+    def check_member_join(self, user_id: int, guild_id: int) -> bool:
+        """Checks if a user is member of a guild or not"""
+        return (
+            self.db.query(GuildJoin.id)
+            .filter_by(user_id=user_id, guild_id=guild_id)
+            .first()
+            is not None
+        )
+
     def create_guild(self, user_id: int, name: str) -> Guild:
         """Creates a 'guild' in the application"""
         # Hardcoded guild limit for someone is 100 at the moment

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, BigInteger
+from sqlalchemy.orm import relationship
 from app.utils import get_snowflake
 from .base import DeclarativeBase
 
@@ -10,8 +11,9 @@ class Channel(DeclarativeBase):
     name = Column(String(32), nullable=False)
     guild_id = Column(String(20), ForeignKey("guild.id"))
     type_ = Column(Integer, nullable=False, name="type")
-
     created_at = Column(BigInteger, default=time.time)
+
+    messages = relationship("Message")
 
     def to_json(self):
         payload = {
