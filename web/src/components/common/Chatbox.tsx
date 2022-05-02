@@ -5,7 +5,7 @@ import { useUIStore } from "../../state/ui";
 const Chatbox: React.FC = () => {
   const [content, setContent] = useState<string>("");
   const uiStore = useUIStore();
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const textAreaRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     textAreaRef.current?.focus();
@@ -14,12 +14,13 @@ const Chatbox: React.FC = () => {
   const handleKeyDown = async (e: KeyboardEvent) => {
     if (e.key === "Enter") {
       if (!e.shiftKey) {
-        setContent("");
         const selectedGuildId = uiStore.selectedGuildId;
         const selectedChannelId = uiStore.getSelectedChannelId(selectedGuildId);
 
-        console.log(`Sending message to channel ${selectedChannelId}`);
-        await sendMessage(selectedChannelId!, content);
+        if (content && content.trim()) {
+          setContent("");
+          await sendMessage(selectedChannelId!, content);
+        }
       } else {
         // Todo: Make input field get bigger due to line breaks
       }
@@ -29,9 +30,8 @@ const Chatbox: React.FC = () => {
 
   return (
     <div className="w-full py-6">
-      <textarea
-        rows={1}
-        className="resize-none outline-none rounded-lg bg-[#1e2338] w-full px-6 flex pt-3"
+      <input
+        className="resize-none outline-none rounded-lg bg-[#1e2338] w-full px-6 flex py-3"
         placeholder="Type something..."
         autoFocus={true}
         onBlur={({ target }) => target.focus()}

@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from app.models import Message, Channel
 from app.models import GuildJoin
 from app.utils import get_snowflake
+from app.core.kafka import kafka_producer
 from .base import DatabaseAware
 
 
@@ -33,6 +34,12 @@ class MessageService(DatabaseAware):
         self.db.add(new_msg)
         self.db.commit()
 
-        # Todo: Dispatch a message create event so that other members are notified
+        kafka_producer.send(
+            "MESSAGE_CREATE",
+            {
+                "guild_id": channel.guild_id,
+                "message": new_msg.to_json(),
+            },
+        )
 
         return new_msg
